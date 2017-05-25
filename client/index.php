@@ -226,16 +226,16 @@
     <script type="text/javascript">
     $(function() {
         $('.rescaldata').click(function() {
-            $('.rescale_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+            $('.rescale_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Result</span></div>');
         });
         $('.standardize').click(function() {
-            $('.standardize_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+            $('.standardize_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Result</span></div>');
         }); 
         $('.normalize').click(function() {
-            $('.normalize_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+            $('.normalize_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Result</span></div>');
         });
         $('.binarize').click(function() {
-            $('.binarization').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+            $('.binarization').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Result</span></div>');
         });
         $('#createFolder').click(function(e) {
             e.preventDefault();
