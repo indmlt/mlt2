@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Prediction</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/full.css" rel="stylesheet">
+    <link href="css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-6">
+                <h1>Loan payment Prediction</h1>
+            </div>
+            <div class="col-xs-3"></div>
+        </div>
+        <!-- upload -->
+        <div class="row">
+            <div style="position:relative;" class="col-xs-4">
+                <a class='btn btn-primary' href='javascript:;'>
+                  Choose File...
+                <input type="file" id="fileUpload" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40"  onchange='$("#upload-file-info").html($(this).val());'>
+                </a>
+                &nbsp;
+                <span class='label label-info' id="upload-file-info"></span>
+                <input class="btn btn-primary btn-sm btn-file hidden" type="button" id="upload" value="Upload"/>
+                <button class="btn btn-primary btn-sm" id="CreatChart" value="Upload">Creat Chart</button>
+            </div> 
+             <div class="selection col-xs-4">
+                <select id="mySelect" class="form-control">
+                    <option>Select Colum</option>
+                </select>
+            </div>
+        </div>
+        <div class="dvCSV " style="height:600px; overflow:auto;"></div>
+        <div class="row">
+            <div class="col-xs-6 costs">
+                <h2>Inputs</h2>
+                <form class="inputs">
+                <input type="text" name="credit_policy" value="1">
+                <input type="text" name="int_rate" value="0.1496">
+                <input type="text" name="installment" value="194.02">
+                <input type="text" name="log_annual_inc" value="10.714418">
+                <input type="text" name="dti" value="4.0">
+                <input type="text" name="fico" value="667">
+                <input type="text" name="days_with_cr_line" value="3180.04">
+                <input type="text" name="revol_bal" value="3839">
+                <input type="text" name="revol_util" value="76.8">
+                <input type="text" name="inq_last_6mths" value="0">
+                <input type="text" name="delinq_2yrs" value="0">
+                <input type="text" name="pub_rec" value="1">
+                <input type="text" name="purpose_credit_card" value="0">
+                <input type="text" name="purpose_debt_consolidation" value="1">
+                <input type="text" name="purpose_educational" value="0">
+                <input type="text" name="purpose_home_improvement" value="0">
+                <input type="text" name="purpose_major_purchase" value="0">
+                <input type="text" name="purpose_small_business" value="0">
+                </form>
+            </div>
+            <div class="col-xs-6 benefits">
+                <p></p>    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 execute ">
+                <!-- <form> -->
+                    <button type="button" class="btn btn-default predict">Predict</button>
+                    <button type="button" class="btn btn-default train">train</button>
+                    <button type="button" class="btn btn-default confusionmatrix">confusionmatrix</button>
+                    <button type="button" class="btn btn-default save_model">Save Model</button>
+                <!-- </form> -->
+            </div>
+            <div class="col-xs-6 output" >
+                <h2>Result</h2>
+                <br>
+                <div class="result"></div>
+                <div class="class_report"></div>
+            </div>
+        </div>
+    </div>
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+    <script type="text/javascript">
+        $(function () {
+        $("#upload").bind("click", function () {
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt|.xlsx|.xls)$/;
+            if (regex.test($("#fileUpload").val().toLowerCase())) {
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var table = $("<table />");
+                        var rows = e.target.result.split("\n");
+                        for (var i = 0; i < rows.length; i++) {
+                            var row = $("<tr />");
+                            var cells = rows[i].split(",");
+                            for (var j = 0; j < cells.length; j++) {
+                                var cell = $("<td />");
+                                cell.html(cells[j]);
+                                row.append(cell);
+                            }
+                            table.append(row);
+                        }
+                        $(".dvCSV").html('');
+                        $(".dvCSV").append(table);
+                        $("table").addClass('table tableChart');
+                        $(".tableChart > tbody > tr:first td").each(function (index) {
+                            var myText = $(this).text(),
+                                myindex = index + 1;
+                            // console.log(myText);
+                            // $('#mySelect').empty();
+                            $('#mySelect').append('<option value="' + myindex + '">' + myText + '</option>');
+                            $(this).replaceWith('<th>' + myText + '</th>');
+                        });
+                        $('.tableChart').prepend('<thead></thead>');
+                        $(".tableChart > tbody > tr:first").appendTo('.tableChart > thead');
+                        $('.tableChart').DataTable();
+
+                    }
+                    reader.readAsText($("#fileUpload")[0].files[0]);
+                } else {
+                    alert("This browser does not support HTML5.");
+                }
+            } else {
+                alert("Please upload a valid CSV file.");
+            }
+        });
+        $('#fileUpload').change( function(event) {
+            var tmppath = URL.createObjectURL(event.target.files[0]);
+            // console.log(tmppath);
+            $("#CreatChart").click(function() {
+                $("#mySelect").empty();
+                $("#upload").trigger("click");
+               
+            });
+        });
+    });
+    </script>
+</body>
+</html>
