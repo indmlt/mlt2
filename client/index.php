@@ -22,6 +22,19 @@
             h1 {
                 padding: 0 0 20px 0;
             }
+            .resultbox {
+              background-color: #fff
+              min-height: 100px;
+              font-size: 18px;
+              margin-top: 5px;
+              box-shadow: 7px 10px 19px #ccc;
+                -webkit-box-shadow: 7px 10px 19px #ccc;
+                -moz-box-shadow: 7px 10px 19px #ccc;
+
+              
+              /*box-shadow: 10px 10px 5px #f7f5f5;*/
+
+            }
         </style>
     </head>
     <body>
@@ -112,9 +125,8 @@
                         </div> 
                         <div class="tab-pane " id="2">
                             <div class="row">
-                                <div class="col-xs-12">
+                                <!-- <div class="col-xs-12">
                                     <div class="col-xs-8">
-                                    <!-- <button id="clickme"> click me </button> -->
                                      <form class="load_FileName">
                                         <div  class="">
                                             <a class='btn btn-primary' href='javascript:;'>
@@ -134,14 +146,19 @@
                                             <option>Select Model</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-xs-12">
                                     <h3>Data Processing</h3><hr>
-                                    <button type="button" style="" class="btn btn-default ">Rescale data</button>
-                                    <button type="button" class="btn btn-default">Standardize data</button>
-                                    <button type="button" class="btn btn-default ">Normalize data</button>
-                                    <button type="button" class="btn btn-default ">binarization</button>
-                                    <div id="drawing" style="margin:30px auto; width:900px;"></div>
+                                    <button type="button" style="" class="btn btn-default rescaldata">Rescale data</button>
+                                    <button type="button" class="btn btn-default standardize">Standardize data</button>
+                                    <button type="button" class="btn btn-default  normalize">Normalize data</button>
+                                    <button type="button" class="btn btn-default binarize">Binarization</button>
+                                    <div class="" style="margin-top: 15px;">
+                                        <div class="rescale_data" style=" display: inline-block; margin-right: 25px;" ></div>
+                                        <div class="standardize_data" style=" display: inline-block; margin-right: 25px;" ></div>
+                                        <div class="normalize_data" style=" display: inline-block; margin-right: 25px;" ></div>
+                                        <div class="binarization" style=" display: inline-block; margin-right: 25px;"></div>
+                                    </div>
                                     <h3>Model Training</h3><hr>
                                     <button type="button" style="margin-bottom: 5px" class="btn btn-default train">Train Model</button>
                                     <button type="button" class="btn btn-default save_model">Save Model</button>
@@ -208,6 +225,18 @@
     <script src="js/jquery.scrollTo.min.js"></script>
     <script type="text/javascript">
     $(function() {
+        $('.rescaldata').click(function() {
+            $('.rescale_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+        });
+        $('.standardize').click(function() {
+            $('.standardize_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+        }); 
+        $('.normalize').click(function() {
+            $('.normalize_data').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+        });
+        $('.binarize').click(function() {
+            $('.binarization').empty().append('<div class="item item-1 resultbox" style="height: 100px; width: 150px; border: solid 1px #f7f5f5;; "><span class="text">Item 1</span></div>');
+        });
         $('#createFolder').click(function(e) {
             e.preventDefault();
             try {
@@ -275,196 +304,7 @@
             });
         });
     });
-    ///////////////////// start flow chart ////////////////////////////////////////////////////////////
-    flowSVG.draw(SVG('drawing').size(900, 1100));
-    flowSVG.config({
-        interactive: true,
-        showButtons: true,
-        connectorLength: 60,
-        scrollto: true
-    });
-    flowSVG.shapes(
-        [
-            {
-            label: 'knowPolicy',
-            type: 'decision',
-            text: [
-                'Do you know the ',
-                'Open Access policy',
-                'of the journal?'
-            ],
-            yes: 'hasOAPolicy',
-            no: 'checkPolicy'
-        }, 
-      {
-            label: 'hasOAPolicy',
-            type: 'decision',
-            text: [
-                'Does it have Open',
-                'Access paid option or is it an',
-                ' Open Access journal?'
-            ],
-            yes: 'CCOffered',
-            no: 'canWrap'
-        }, 
-        {
-            label: 'CCOffered',
-            type: 'decision',
-            text: [
-                'Creative Commons licence',
-                'CC-BY offered?'
-            ],
-            yes: 'canComply',
-            no:'checkGreen'
-        },
-        {
-            label: 'canComply',
-            type: 'finish',
-            text: [
-                'Great - can comply. ',
-                'Please complete'
-            ],
-          links: [
-              {
-                  text: 'application form', 
-                  url: 'http://www.jqueryscript.net/chart-graph/Simple-SVG-Flow-Chart-Plugin-with-jQuery-flowSVG.html', 
-                  target: '_blank'
-              }
-          ],
-          tip: {title: 'HEFCE Note',
-          text:
-          [
-              'You must put your',
-              'accepted version into',
-              'WRAP and/or subject',
-              'repository within 3 months',
-              'of acceptance.'
-          ]}
-        },
-        {
-            label: 'canWrap',
-            type: 'decision',
-            text: [
-                'Can you archive in ',
-                'WRAP and/or Subject',
-                'repository?'
-            ],
-            yes: 'checkTimeLimits',
-            no: 'doNotComply'
-        }, 
-        {
-            label: 'doNotComply',
-            type: 'finish',
-            text: [
-                'You do not comply at all. ',
-                'Is this really the only journal',
-                ' you want to use? ',
-                'Choose another or make ',
-                'representations to journal'
-            ],
-            tip: {title: 'HEFCE Note',
-            text:
-            [
-                'If you really have to go',
-                'this route you must log',
-                'the exception in WRAP on',
-                'acceptance in order',
-                'to comply.'
-            ]}
-        },       
-        {
-            label: 'checkGreen',
-            type: 'process',
-            text: [
-                'Check the journal\'s policy',
-                'on the green route'
-            ],
-            next: 'journalAllows',
-        }, 
-        {
-            label: 'journalAllows',
-            type: 'decision',
-            text: ['Does the journal allow this?'],
-            yes: 'checkTimeLimits',
-            no: 'cannotComply',
-            orient: {
-                yes:'r',
-                no: 'b'
-            }
-            
-        },
-        {
-            label: 'checkTimeLimits',
-            type: 'process',
-            text: [
-                'Make sure the time limits',
-                'acceptable',
-                '6 month Stem',
-                '12 month AHSS'
-            ],
-            next: 'depositInWrap'
-        },
-        {
-            label: 'cannotComply',
-            type: 'finish',
-            text: [
-                'You cannot comply with',
-                'RCUK policy. Contact ',
-                'journal to discuss or',
-                'choose another'
-            ],
-            tip: {title: 'HEFCE Note',
-            text:
-            [
-                'Deposit in WRAP if',
-                'time limits acceptable. If',
-                'journal does not allow at all',
-                'an exception record will',
-                'have to be entered',
-                'in WRAP, if you feel this is',
-                'most appropriate journal.'
-            ]}
-        },
-        {
-            label: 'depositInWrap',
-            type: 'finish',
-            text: [
-                'Deposit in WRAP here or ',
-                'contact team'
-            ],
-            tip: {title: 'HEFCE Note',
-            text:
-            [
-                'You must put your',
-                'accepted version into',
-                'WRAP and/or subject',
-                'repository within 3 months',
-                'of acceptance.',
-                'Note also time limits:',
-                'HEFCE 12 months',
-                'STEM ? months',
-                'AHSS ? months',
-                'So you comply here too.'
-            ]}
-        },
-        {
-            label: 'checkPolicy',
-            type: 'process',
-            text: [
-                'Check journal website',
-                'or go to '
-            ],
-            links: [
-                {
-                    text: 'SHERPA FACT/ROMEO ', 
-                    url: 'http://www.jqueryscript.net/chart-graph/Simple-SVG-Flow-Chart-Plugin-with-jQuery-flowSVG.html', 
-                    target: '_blank'
-                }
-            ],
-            next: 'hasOAPolicy'
-        }
-    ]);
-
+ 
     </script>
     </body>
 </html>
