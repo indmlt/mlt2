@@ -51,7 +51,7 @@
             <div class="row">
                 <div id="exTab2" class="container"> 
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#1" data-toggle="tab">Analysis</a> </li>
+                        <li class="active"><a href="#1" data-toggle="tab">Eploration</a> </li>
                         <li><a  href="#2" data-toggle="tab">Modeling</a></li>
                         <li><a  href="#3" data-toggle="tab">Prediction</a></li>
                     </ul>
@@ -113,11 +113,11 @@
                                         </div>  
                                     </div>
                                     <div class="col-xs-4">
-                                         <div class="selection">
+                                         <!-- <div class="selection">
                                             <select id="mySelect" class="form-control">
                                                 <option>Select Colum</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="dvCSV col-xs-12" style="max-height:300px; overflow:auto; margin-top: 10px;"></div>
                                 </div>
@@ -273,7 +273,7 @@
                         $(".dvCSV").html('');
                         $(".dvCSV").append(table);
                         $("table").addClass('table tableChart table-bordered');
-                        $('.tableChart').DataTable();
+                        // $('.tableChart').DataTable();
                         $(".tableChart > tbody > tr:first td").each(function(index) {
                             var myText = $(this).text(),
                                 myindex = index + 1;
